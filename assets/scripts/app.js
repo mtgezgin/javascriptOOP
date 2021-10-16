@@ -71,6 +71,7 @@ class Tooltip extends Component {
         tooltipElement.style.position = 'absolute';
         tooltipElement.style.left = x + 'px';
         tooltipElement.style.top = y + 'px';
+        
         tooltipElement.addEventListener('click', this.closeTooltip.bind(this));
         this.element = tooltipElement;
     }
@@ -156,8 +157,22 @@ class App {
         const activeProjectList = new ProjectList('active');
         const finishedProjectList = new ProjectList('finished');
         activeProjectList.setSwitchHandlerFunction(finishedProjectList.addProject.bind(finishedProjectList)); 
-        finishedProjectList.setSwitchHandlerFunction(activeProjectList.addProject.bind(activeProjectList)); 
+        finishedProjectList.setSwitchHandlerFunction(activeProjectList.addProject.bind(activeProjectList));
+
+        const timerId = setTimeout(() => this.startAnalytics, 3000);
+
+        document.getElementById('stop-analytics-btn').addEventListener('click', () => {
+            clearTimeout(timerId);
+        })
+    };
+    
+    static startAnalytics() {
+        const analyticScript = document.createElement('script');
+        analyticScript.src = 'assets/scripts/analytics.js';
+        analyticScript.defer = true;
+        document.head.append(analyticScript);            
     }
+
 }
 
 App.init();
